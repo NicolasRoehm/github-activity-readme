@@ -4,7 +4,7 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { Toolkit } = require("actions-toolkit");
 
-const MAX_LINES = 5;
+const MAX_LINES = 3;
 
 /**
  * Returns the sentence case representation
