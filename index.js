@@ -133,7 +133,7 @@ Toolkit.run(
         .map((item) => serializers[item.type](item));
       content.push(...result);
       page++;
-      await delay(5000);
+      await delay(30000 + page*1000);
     }
 
     // We only have five lines to work with
