@@ -1492,6 +1492,8 @@ const capitalize = (str) => str.slice(0, 1).toUpperCase() + str.slice(1);
 
 const urlPrefix = "https://github.com/";
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 const commentIcon = '✒️';
 const issueIcon   = '🛠';
 const mergedIcon  = '✔️';
@@ -1606,6 +1608,7 @@ Toolkit.run(
         .map((item) => serializers[item.type](item));
       content.push(...result);
       page++;
+      await delay(5000);
     }
 
     // We only have five lines to work with
