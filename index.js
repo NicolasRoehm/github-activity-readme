@@ -116,33 +116,21 @@ Toolkit.run(
 
     // Get the user's public events
     tools.log.debug(`Getting activity for ${GH_USERNAME}`);
-
-    let page    = 1;
-    let content = [];
-    while (content.length < MAX_LINES)
-    {
-      const events = await tools.github.activity.listPublicEventsForUser({
-        username : GH_USERNAME,
-        per_page : 100,
-        page     : page
-      });
-      const result = events.data
-        // Filter out any boring activity
-        .filter((event) => serializers.hasOwnProperty(event.type))
-        // Call the serializer to construct a string
-        .map((item) => serializers[item.type](item));
-      content.push(...result);
-      page++;
-      await delay(60000*3 + page*1000);
-    }
-
-    // We only have five lines to work with
-    if (content.length > MAX_LINES)
-      content.slice(0, MAX_LINES);
-
+    const events = await tools.github.activity.listPublicEventsForUser({
+      username: GH_USERNAME,
+      per_page: 100,
+    });
     tools.log.debug(
-      `Activity for ${GH_USERNAME}, ${content.length} events found.`
+      `Activity for ${GH_USERNAME}, ${events.data.length} events found.`
     );
+
+    const content = events.data
+      // Filter out any boring activity
+      .filter((event) => serializers.hasOwnProperty(event.type))
+      // We only have five lines to work with
+      .slice(0, MAX_LINES)
+      // Call the serializer to construct a string
+      .map((item) => serializers[item.type](item));
 
     const readmeContent = fs.readFileSync("./README.md", "utf-8").split("\n");
 
